@@ -33,8 +33,7 @@ python tournament_test.py
 
 
 
-#
-Advanced version of tournament:
+#Advanced version of tournament:
 
 ###Extra Features:
 ```
