@@ -4,36 +4,48 @@
 #
 
 import psycopg2
+from contextlib import contextmanager
 
 def connect():
     """Connect to the PostgreSQL database.  Returns a database connection."""
-    return psycopg2.connect("dbname=tournament")
+    try:
+        return psycopg2.connect("dbname=tournament")
+    except:
+        print ("Connection Failed")
 
+@contextmanager
+def get_cursor():
+    """Query Helper Function using context lib, Creates a cursor
+       from a database connection object, and performs query using
+       that cursor.
+    """
+    DB = connect()
+    cursor = DB.cursor()
+    try:
+        yield cursor
+    except:
+        raise
+    else:
+        DB.commit()
+    finally:
+        cursor.close()
+        DB.close()
 
 def deleteMatches():
     """Remove all the match records from the database."""
-    DB = connect()
-    c = DB.cursor()
-    c.execute("DELETE FROM match")
-    c.execute("UPDATE Player SET wins= 0, matches = 0")
-    DB.commit()
-    DB.close()
+    with get_cursor() as c:
+        c.execute("DELETE FROM match")
 
 def deletePlayers():
     """Remove all the player records from the database."""
-    DB = connect()
-    c = DB.cursor()
-    c.execute("DELETE FROM player")
-    DB.commit()
-    DB.close()
-
+    with get_cursor() as c:
+        c.execute("DELETE FROM player")
 
 def countPlayers():
     """Returns the number of players currently registered."""
-    DB = connect()
-    c = DB.cursor()
-    c.execute("SELECT COUNT(*) FROM player")
-    return c.fetchone()[0]
+    with get_cursor() as c:
+        c.execute("SELECT COUNT(*) FROM player")
+        return c.fetchone()[0]
 
 def registerPlayer(name):
     """Adds a player to the tournament database.
@@ -44,11 +56,9 @@ def registerPlayer(name):
     Args:
       name: the player's full name (need not be unique).
     """
-    DB = connect()
-    c = DB.cursor()
-    c.execute("INSERT INTO player (name, wins, matches) values (%s, 0, 0)", (name,))
-    DB.commit()
-    DB.close()
+    with get_cursor() as c:
+        c.execute("INSERT INTO player (name) values (%s)", (name,))
+
 
 
 def playerStandings():
@@ -64,11 +74,9 @@ def playerStandings():
         wins: the number of matches the player has won
         matches: the number of matches the player has played
     """
-    DB = connect()
-    c = DB.cursor()
-    c.execute("SELECT id, name, wins, matches FROM player ORDER BY wins DESC")
-    players = [(str(row[0]), str(row[1]), row[2], row[3]) for row in c.fetchall()]
-    DB.close()
+    with get_cursor() as c:
+        c.execute("SELECT id, name, wins, matches FROM Count ORDER BY wins DESC")
+        players = [(str(row[0]), str(row[1]), row[2], row[3]) for row in c.fetchall()]
     return players
 
 
@@ -80,15 +88,9 @@ def reportMatch(winner, loser):
       loser:  the id number of the player who lost
     """
     #insert into match table
-    DB = connect()
-    c = DB.cursor()
-    c.execute("INSERT INTO match (winner, loser) values (%s, %s)", (winner, loser))
+    with get_cursor() as c:
+        c.execute("INSERT INTO match (winner, loser) values (%s, %s)", (winner, loser))
 
-    #update column wins and matches  player table
-    c.execute("UPDATE Player SET wins= wins +1, matches = matches +1 WHERE id = %s", (winner,))
-    c.execute("UPDATE Player SET matches = matches +1 WHERE id = %s", (loser,))
-    DB.commit()
-    DB.close()
 
 def chunks(l, n):
     """Yield successive n-sized chunks from l."""

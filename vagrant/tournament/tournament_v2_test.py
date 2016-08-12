@@ -31,9 +31,8 @@ def testPlayerEntersTournament():
     tid = registerTournament("1")
     pid = registerPlayer("A")
     entersTournament(pid, tid)
-    tsize = returnSizeOfTournament(tid)
     tcountplayer = countPlayerInTournament(tid)
-    if tsize != 1 or tcountplayer != 1:
+    if tcountplayer != 1:
         raise ValueError("Players count in a tournament should equal to tournament size.")
     print "3. Player can enter a tournament."
 
@@ -94,8 +93,8 @@ def test_report_match():
     entersTournament(pid2, tid)
     entersTournament(pid3, tid)
     entersTournament(pid4, tid)
-    reportMatch(False, tid, pid1, pid2)
-    reportMatch(True, tid, pid3, pid4)
+    reportMatch(0, tid, pid1, pid2)
+    reportMatch(1, tid, pid3, pid4)
     standings = playerStandings(tid)
     for (pid, pscore, pname) in standings:
         if pid == pid1 and pscore != 3:
@@ -125,14 +124,16 @@ def test_try_pairing_no_rematch():
 
 def test_set_bye():
     clearAll()
-    pid1= registerPlayer("Melpomene Murray")
     tid = registerTournament("1")
+    pid1= registerPlayer("Melpomene Murray")
     entersTournament(pid1, tid)
-    r = setBye(pid1, tid)
-    if r != True:
+    pid = setBye(tid)
+    if pid != pid1:
         raise ValueError()
-    r = setBye(pid1, tid)
-    if r != False:
+    pid2= registerPlayer("Mel Murray")
+    entersTournament(pid2, tid)
+    pid = setBye(tid)
+    if pid != pid2:
         raise ValueError()
     print "9. Set Bye works fine."
 
@@ -168,8 +169,8 @@ def testPairings():
     tryPairing(tid, pid1, pid2)
     tryPairing(tid, pid3, pid4)
     #Report Match result
-    reportMatch(False, tid, pid1, pid2)
-    reportMatch(False, tid, pid3, pid4)
+    reportMatch(0, tid, pid1, pid2)
+    reportMatch(0, tid, pid3, pid4)
     #Score:
     #Pid:   1  2  3  4
     #Score: 3, 0, 3, 0
@@ -187,8 +188,8 @@ def testPairings():
             "After one match, players with high score should be paired .")
     #Round2
 
-    reportMatch(True, tid, pid1, pid3)
-    reportMatch(False, tid, pid2, pid4)
+    reportMatch(1, tid, pid1, pid3)
+    reportMatch(0, tid, pid2, pid4)
     #Score:
     #Pid:   1  2  3  4
     #Score: 4, 3, 4, 0
@@ -223,7 +224,7 @@ def testByePairs():
     [(ppid1, pname1, ppid2, pname2)] = pairs
     if ppid1==pid1 or ppid2 == pid1:
         raise ValueError()
-    reportMatch(False,tid, pid2,pid3)
+    reportMatch(0,tid, pid2,pid3)
 
     # pid1:3 pid2: 3, pid3:1
     pairs = swissPairings(tid)
