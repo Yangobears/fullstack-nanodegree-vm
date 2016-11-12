@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-sm-8 col-sm-offset-2">
+  <div class="item-name">{{item.name}}</div>
+  <div class="item-description">Description: {{item.description}}</div>
+  {% if permission %}
+    <a class="btn btn-default" href = {{url_for('edititem', itemname=item.name)}}> Edit </a>
+    <a class="btn btn-default" href = {{url_for('deleteitem', itemname=item.name)}}> Delete </a>
+  {% endif %}
+  <div class="item-images">
+    <img src="{{ url_for('static', filename=item.imgsrc)}}" alt="picture of {{item.name}}">
+  </div>
+</div>
+
+{% endblock %}

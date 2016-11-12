@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-sm-8 col-sm-offset-2">
+  <h1>Delete item</h1>
+  <h2>Are you sure you want to delete {{item.name}} ?</h2>
+  <form method="POST">
+    <button type="submit" class="btn btn-default" value="Delete">Delete</button>
+
+  </form>
+
+
+</div>
+{% endblock %}

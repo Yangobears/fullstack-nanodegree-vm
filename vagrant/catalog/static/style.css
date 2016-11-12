@@ -1,0 +1,61 @@
+a {
+  text-decoration: none !important;
+  color: grey;
+  font-size: large;
+}
+
+ul {
+  list-style:  none;
+}
+body {
+  height: 100%
+}
+a:hover {
+  color: white;
+  background: cornflowerblue;
+
+}
+.category-list {
+ 	padding: 20px;
+  font-size: 24px;
+  color: black;
+}
+
+.category-nav {
+  margin: 20px;
+  list-style: none;
+}
+
+
+.side-bar {
+  height: 500px;
+  background-color: aquamarine;
+}
+
+
+.title {
+  font-size: 25px;
+  margin: 20px;
+}
+
+.item-list {
+  height: 500px;
+  background-color: azure;
+}
+
+.action {
+ margin-left: 100px;
+ }
+
+ .item-name {
+   font-size: 25px;
+ }
+
+ .item-description {
+   font-size: large;
+ }
+
+ .page-title {
+   font-size: 30px;
+   text-align: center;
+ }

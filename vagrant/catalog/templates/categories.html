@@ -1,0 +1,25 @@
+{% extends "home.html" %}
+{% block title %}Categories{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="col-sm-10 col-sm-offset-1">
+{% block sidebar %}
+		{{ super() }}
+{% endblock sidebar %}
+<div class="item-list col-sm-8">
+
+    <div class="title text-uppercase">Items in {{category.name}}</div>
+    <ul class="category-list">
+      {% for i in items %}
+      <li>
+        <a href={{url_for('showitem', itemname=i.name)}}>{{ i.name | safe }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+</div>
+{% endblock %}

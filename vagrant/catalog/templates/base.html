@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+      <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}" />
+      <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css')}}" />
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+       <script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
+      <script src="/static/main.js"></script>
+      <title>
+        {% block title %}
+          Catalog
+        {% endblock %}
+      </title>
+    {% endblock %}
+</head>
+
+<body>
+    <div class="login-area">
+      {% if user %}
+        {{user.name}} <a class="login-link" href="/logout">logout</a>
+      {% else %}
+        <a class="login-link" href="/login">login</a>|
+        <a class="login-link" href="/signup">signup</a>
+      {% endif %}
+   </div>
+    <div class=page-title>
+      Welcome to Fresh Item Catalog
+    </div>
+    {% block content %}
+    {% endblock %}
+
+</body>
+
+
+</html>
