@@ -3,10 +3,11 @@
 <head>
     {% block head %}
       <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}" />
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
       <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css')}}" />
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-       <script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
-      <script src="/static/main.js"></script>
+      <script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
+      <script src="//apis.google.com/js/platform.js?onload=start"></script>
+      <meta name="google-signin-client_id" content="569674675447-9e2l1aau48durfde850hnjferg78ja1d.apps.googleusercontent.com">
       <title>
         {% block title %}
           Catalog
@@ -16,21 +17,57 @@
 </head>
 
 <body>
-    <div class="login-area">
-      {% if user %}
-        {{user.name}} <a class="login-link" href="/logout">logout</a>
-      {% else %}
-        <a class="login-link" href="/login">login</a>|
-        <a class="login-link" href="/signup">signup</a>
-      {% endif %}
+    <div class="login-area col-sm-10 col-sm-offset-2">
+      <div id="signInButton">
+          <div class="g-signin2" data-onsuccess="onSignIn"></div>
+      </div>
+      <a href="#" onclick="signOut();">Sign out</a>
+      <script>
+          function onSignIn(googleUser) {
+              var profile = googleUser.getBasicProfile();
+              console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+              console.log('Name: ' + profile.getName());
+              console.log('Image URL: ' + profile.getImageUrl());
+              console.log('Email: ' + profile.getEmail());
+              var id_token = googleUser.getAuthResponse().id_token;
+              var xhr = new XMLHttpRequest();
+              xhr.open('POST', '/tokensignin');
+              xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+              xhr.onload = function() {
+                console.log('Signed in as: ' + xhr.responseText);
+              };
+              xhr.send('idtoken=' + id_token);
+          }
+          function signOut() {
+            console.log("signout");
+              var auth2 = gapi.auth2.getAuthInstance();
+              var xhr = new XMLHttpRequest();
+              xhr.open('POST', '/signout');
+              xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+              xhr.send()
+              auth2.signOut().then(function() {
+                  console.log('User signed out.');
+              });
+          }
+      </script>
    </div>
     <div class=page-title>
-      Welcome to Fresh Item Catalog
+      <a href={{url_for('home')}}>Home </a>| Welcome to Fresh Item Catalog
     </div>
+    <div class=flash-msg>
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul class=flashes>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+    </div>
+
     {% block content %}
     {% endblock %}
 
 </body>
-
-
 </html>

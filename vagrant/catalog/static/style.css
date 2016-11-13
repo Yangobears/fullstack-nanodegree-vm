@@ -1,7 +1,6 @@
 a {
   text-decoration: none !important;
   color: grey;
-  font-size: large;
 }
 
 ul {
@@ -11,9 +10,7 @@ body {
   height: 100%
 }
 a:hover {
-  color: white;
-  background: cornflowerblue;
-
+  color: cornflowerblue;
 }
 .category-list {
  	padding: 20px;
@@ -44,7 +41,7 @@ a:hover {
 }
 
 .action {
- margin-left: 100px;
+ margin-left: 50px;
  }
 
  .item-name {
@@ -58,4 +55,10 @@ a:hover {
  .page-title {
    font-size: 30px;
    text-align: center;
+ }
+
+ .flashes {
+   text-align: center;
+   color: red;
+
  }

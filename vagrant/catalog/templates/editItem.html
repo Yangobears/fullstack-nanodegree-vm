@@ -5,33 +5,34 @@
     <title>Catglog</title>
   </head>
 
-<div class="form-group col-sm-8 col-sm-offset-2">
-<form method = "POST">
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input type="text" class="form-control" name="name" placeholder="{{item.name}}">
+  <div class="form-group col-sm-8 col-sm-offset-2">
+    <form method = "POST" enctype=multipart/form-data>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" name="name" placeholder="{{item.name}}">
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" name="description" placeholder="{{item.description}}">
+      </div>
+      <div class="form-group">
+        <label for="name" name="category">Category</label>
+        <select name="category" class="form-control">
+        {% for c in categories %}
+          {% if item.category_id == c.id %}
+          <option value="{{c.id}}" selected>{{c.name}}</option>
+          {% else %}
+          <option value="{{c.id}}">{{c.name}}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+      </div>
+      <div class="form-group">
+        <label for="image" name="image">Image</label>
+        <input type="file" name="file"></input>
+      </div>
+     <button type="submit" class="btn btn-default" value="Create">Submit</button>
+      <a href={{url_for('showitem', itemname=item.name)}}>Cancel</a>
+    </form>
   </div>
-  <div class="form-group">
-    <label for="description">Description</label>
-    <input type="text" class="form-control" name="description" placeholder="{{item.description}}">
-  </div>
-  <div class="form-group">
-    <label for="name" name="category">Category</label>
-    <select name="category" class="form-control">
-    {% for c in categories %}
-      {% if item.category_id == c.id %}
-      <option value="{{c.id}}" selected>{{c.name}}</option>
-      {% else %}
-      <option value="{{c.id}}">{{c.name}}</option>
-      {% endif %}
-    {% endfor %}
-  </select>
- </div>
- <button type="submit" class="btn btn-default" value="Create">Submit</button>
-
-</form>
-</div>
-
-</body>
-</html>
 {% endblock %}

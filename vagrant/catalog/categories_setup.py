@@ -22,39 +22,15 @@ session.query(Category).delete()
 session.query(Item).delete()
 session.query(User).delete()
 
-User1 = User(name="Robo Barista", email="tinnyTim@udacity.com",
-             picture='https://pbs.twimg.com/profile_images/2671170543/18debd694829ed78203a5a36dd364160_400x400.png')
-session.add(User1)
-session.commit()
-
 category1 = Category(name="Fruit")
-
 session.add(category1)
 session.commit()
-
-item1 = Item(user_id=1, name="Apple", description="Juicy fruit", category=category1)
-
-session.add(item1)
-session.commit()
-
-
-item2 = Item(user_id=1, name="Orange", description="Vitamin C", category=category1)
-
-session.add(item2)
-session.commit()
-
-category2 = Category(name="Veggie")
-
+category2 = Category(name="Vegetable")
 session.add(category2)
 session.commit()
-
-item3 = Item(user_id=1, name="Spinach", description="Iron", category=category2)
-
-session.add(item3)
+category3 = Category(name="Dairy")
+session.add(category3)
 session.commit()
-
-
-item4 = Item(user_id=1, name="Broccoli", description="Good Fiber", category=category2)
-
-session.add(item4)
+category4 = Category(name="Grain")
+session.add(category4)
 session.commit()

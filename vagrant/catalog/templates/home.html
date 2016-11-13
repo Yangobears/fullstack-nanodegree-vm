@@ -1,9 +1,5 @@
 {% extends "base.html" %}
-<div class="col-sm-10 col-sm-offset-1">
-<!-- <div class="col-sm-10 col-sm-offset-1"> -->
 {% block content %}
-
-
  <div class="col-sm-10 col-sm-offset-1">
 {% block sidebar %}
       <div class="side-bar col-sm-4">
@@ -18,20 +14,17 @@
         </ul>
       </div>
 {% endblock %}
-
     <div class="item-list col-sm-8">
       <div class="title text-uppercase">Latest Modified Item
-
-        <a class=" action btn btn-default" href = "{{url_for('newitem')}}"> Create New Item </a></div>
-
+        {% if permission %}
+          <a class=" action btn btn-default" href = "{{url_for('newitem')}}"> Create New Item </a>
+        {% endif %}
+      </div>
       <ul class="category-list">
-        {% for i in items %}
-        <li>
-          <a href={{url_for('showitem', itemname=i.name)}}>{{ i.name | safe }}</a>
-        </li>
-        {% endfor %}
+      {% for i in items %}
+        <li><a href={{url_for('showitem', itemname=i.name)}}>{{ i.name | safe }}</a></li>
+      {% endfor %}
       </ul>
     </div>
-  </div>
 </div>
 {%endblock %}
