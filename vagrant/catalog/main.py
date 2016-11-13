@@ -254,10 +254,6 @@ def deleteitem(itemname):
         session.delete(item)
         session.commit()
         return redirect(url_for('showcategory', categoryname=category.name))
-    else:
-
-        return render_template('deleteItem.html', item=item)
-
     return render_template('deleteItem.html', item=item)
 
 
@@ -265,10 +261,6 @@ def deleteitem(itemname):
 def file_too_big(e):
     flash("File too big")
     return redirect(request.url), 413
-#
-# @app.errorhandler(403)
-# def page_not_found(e):
-#     return render_template('403.html'), 403
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
